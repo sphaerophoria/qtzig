@@ -17,6 +17,7 @@ pkgs.mkShell {
     cmake
     libGL
     mesa
+    ninja
     libX11 libXcomposite libXext libXi libXrender libxcb libxkbcommon xcbutil
     libXdmcp xcbutilimage xcbutilkeysyms xcbutilrenderutil xcbutilwm libXcursor libXft libXinerama libXmu libXpm libXrandr libXt libXtst libXv xcb-util-cursor xcbutilerrors
   ] ++ libsForQt5.full.nativeBuildInputs;

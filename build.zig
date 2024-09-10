@@ -17,18 +17,18 @@ fn buildQtModule(b: *std.Build, dep: []const u8, requires: []const *std.Build.St
     for (requires) |r| {
         cmake.step.dependOn(r);
     }
+    cmake.addArgs(&.{ "-G", "Ninja" });
 
     const install_prefix = b.getInstallPath(.prefix, ".");
     const install_prefix_arg = try std.fmt.allocPrint(b.allocator, "-DCMAKE_INSTALL_PREFIX={s}", .{install_prefix});
     defer b.allocator.free(install_prefix_arg);
     cmake.addArg(install_prefix_arg);
 
-    const make = b.addSystemCommand(&.{ "make", "-C" });
+    const make = b.addSystemCommand(&.{ "ninja", "-C" });
     make.addDirectoryArg(build_dir);
-    make.addArg("-j9");
     make.step.dependOn(&cmake.step);
 
-    const install = b.addSystemCommand(&.{ "make", "-C" });
+    const install = b.addSystemCommand(&.{ "ninja", "-C" });
     install.addDirectoryArg(build_dir);
     install.addArg("install");
     install.step.dependOn(&make.step);
@@ -45,13 +45,17 @@ pub fn build(b: *std.Build) !void {
     const target = b.standardTargetOptions(.{});
     const opt = b.standardOptimizeOption(.{});
 
-    const rcc = b.addSystemCommand(&.{ "rcc", "-o" });
+    const rcc_bin = b.getInstallPath(.prefix, "libexec/rcc");
+    const rcc = b.addSystemCommand(&.{ rcc_bin, "-o" });
     const resources_cpp = rcc.addOutputFileArg("resources.cpp");
     rcc.addFileArg(b.path("qml_example/resources.qrc"));
+    rcc.step.dependOn(base);
 
-    const moc = b.addSystemCommand(&.{ "moc", "-o" });
+    const moc_bin = b.getInstallPath(.prefix, "libexec/moc");
+    const moc = b.addSystemCommand(&.{ moc_bin, "-o" });
     const app_moc_cpp = moc.addOutputFileArg("app.moc.cpp");
     moc.addFileArg(b.path("qml_example/app.h"));
+    moc.step.dependOn(base);
 
     const exe = b.addExecutable(.{
         .name = "test",
