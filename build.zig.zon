@@ -5,19 +5,21 @@
     .dependencies = .{
         .qtbase = .{
             .url = "https://qt.mirror.constant.com/archive/qt/6.7/6.7.2/submodules/qtbase-everywhere-src-6.7.2.tar.xz",
-	    .hash = "1220bf7b3353afe238bf085e26fd118008b38e7bb685e7d7a825d8d23230c13813cf",
+            .hash = "1220bf7b3353afe238bf085e26fd118008b38e7bb685e7d7a825d8d23230c13813cf",
         },
         .qtdeclarative = .{
             .url = "https://qt.mirror.constant.com/archive/qt/6.7/6.7.2/submodules/qtdeclarative-everywhere-src-6.7.2.tar.xz",
-	    .hash = "122026fa8d945625c9d8428391437428af42efed39853673f661cfe7fc02f3869106",
+            .hash = "122026fa8d945625c9d8428391437428af42efed39853673f661cfe7fc02f3869106",
         },
         .qtshadertools = .{
             .url = "https://qt.mirror.constant.com/archive/qt/6.7/6.7.2/submodules/qtshadertools-everywhere-src-6.7.2.tar.xz",
-	    .hash = "1220622982f07828d24eb5a438ef9103e880517b1a75d4e1f67202ca6df7a633928f",
+            .hash = "1220622982f07828d24eb5a438ef9103e880517b1a75d4e1f67202ca6df7a633928f",
         },
     },
     .paths = .{
         "build.zig",
         "build.zig.zon",
+        "build/cc.sh",
+        "build/cxx.py",
     },
 }
