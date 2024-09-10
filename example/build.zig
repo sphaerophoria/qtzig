@@ -1,6 +1,7 @@
 const std = @import("std");
 
-fn makeQtLazyPath(b: *std.Build, dep: *std.Build.Dependency) !std.Build.LazyPath {
+fn makeQtLazyPath(b: *std.Build) !std.Build.LazyPath {
+    const dep = b.dependency("qt", .{});
     const generated = try b.allocator.create(std.Build.GeneratedFile);
     generated.* = std.Build.GeneratedFile{
         .step = &dep.builder.install_tls.step,
@@ -14,9 +15,7 @@ fn makeQtLazyPath(b: *std.Build, dep: *std.Build.Dependency) !std.Build.LazyPath
 }
 
 pub fn build(b: *std.Build) !void {
-    const dep = b.dependency("qt", .{});
-    const qt_install_dir = try makeQtLazyPath(b, dep);
-    b.getInstallStep().dependOn(&dep.builder.install_tls.step);
+    const qt_install_dir = makeQtLazyPath(b);
 
     const target = b.standardTargetOptions(.{});
     const opt = b.standardOptimizeOption(.{});
