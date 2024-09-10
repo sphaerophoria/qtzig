@@ -40,49 +40,5 @@ fn buildQtModule(b: *std.Build, dep: []const u8, requires: []const *std.Build.St
 pub fn build(b: *std.Build) !void {
     const base = try buildQtModule(b, "qtbase", &.{});
     const shader_tools = try buildQtModule(b, "qtshadertools", &.{base});
-    const qml = try buildQtModule(b, "qtdeclarative", &.{ base, shader_tools });
-
-    const target = b.standardTargetOptions(.{});
-    const opt = b.standardOptimizeOption(.{});
-
-    const rcc_bin = b.getInstallPath(.prefix, "libexec/rcc");
-    const rcc = b.addSystemCommand(&.{ rcc_bin, "-o" });
-    const resources_cpp = rcc.addOutputFileArg("resources.cpp");
-    rcc.addFileArg(b.path("qml_example/resources.qrc"));
-    rcc.step.dependOn(base);
-
-    const moc_bin = b.getInstallPath(.prefix, "libexec/moc");
-    const moc = b.addSystemCommand(&.{ moc_bin, "-o" });
-    const app_moc_cpp = moc.addOutputFileArg("app.moc.cpp");
-    moc.addFileArg(b.path("qml_example/app.h"));
-    moc.step.dependOn(base);
-
-    const exe = b.addExecutable(.{
-        .name = "test",
-        .root_source_file = b.path("src/main.zig"),
-        .target = target,
-        .optimize = opt,
-    });
-
-    exe.addCSourceFile(.{
-        .file = app_moc_cpp,
-    });
-    exe.addCSourceFile(.{
-        .file = resources_cpp,
-    });
-    exe.addCSourceFile(.{
-        .file = b.path("qml_example/gui.cpp"),
-    });
-    const lib_dir = b.getInstallPath(.prefix, "lib");
-    exe.addLibraryPath(.{ .cwd_relative = lib_dir });
-    exe.linkSystemLibrary("Qt6Core");
-    exe.linkSystemLibrary("Qt6Gui");
-    exe.linkSystemLibrary("Qt6Qml");
-    exe.linkLibCpp();
-    const include_dir = b.getInstallPath(.prefix, "include");
-    exe.addIncludePath(std.Build.LazyPath{ .cwd_relative = include_dir });
-    exe.addIncludePath(b.path("qml_example"));
-    exe.step.dependOn(qml);
-
-    b.installArtifact(exe);
+    _ = try buildQtModule(b, "qtdeclarative", &.{ base, shader_tools });
 }

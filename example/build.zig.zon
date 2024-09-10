@@ -1,0 +1,14 @@
+.{
+    .name = "qt",
+    .version = "1.0.0",
+    .minimum_zig_version = "0.13.0",
+    .dependencies = .{
+        .qt = .{
+            .path = "../",
+        },
+    },
+    .paths = .{
+        "build.zig",
+        "build.zig.zon",
+    },
+}
