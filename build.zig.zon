@@ -15,6 +15,10 @@
             .url = "https://qt.mirror.constant.com/archive/qt/6.7/6.7.2/submodules/qtshadertools-everywhere-src-6.7.2.tar.xz",
             .hash = "1220622982f07828d24eb5a438ef9103e880517b1a75d4e1f67202ca6df7a633928f",
         },
+	.qtlanguageserver = .{
+            .url = "https://qt.mirror.constant.com/archive/qt/6.7/6.7.2/submodules/qtlanguageserver-everywhere-src-6.7.2.tar.xz",
+	    .hash = "12205fbdb9cba567d1bf9ecccc43f1d6501eaa47ac6e64727ba1aef50ba1eee9be2a",
+	},
     },
     .paths = .{
         "build.zig",

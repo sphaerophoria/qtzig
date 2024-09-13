@@ -40,5 +40,6 @@ fn buildQtModule(b: *std.Build, dep: []const u8, requires: []const *std.Build.St
 pub fn build(b: *std.Build) !void {
     const base = try buildQtModule(b, "qtbase", &.{});
     const shader_tools = try buildQtModule(b, "qtshadertools", &.{base});
-    _ = try buildQtModule(b, "qtdeclarative", &.{ base, shader_tools });
+    const lang_server = try buildQtModule(b, "qtlanguageserver", &.{ base });
+    _ = try buildQtModule(b, "qtdeclarative", &.{ base, shader_tools, lang_server });
 }
